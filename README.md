@@ -35,13 +35,10 @@ The PC version of Uma Musume **encrypts the `meta` database file**, which makes 
 
 **Option 1: Decrypt your PC meta file**
 ```sh
-# Install pysqlcipher3 for decryption
-pip install pysqlcipher3
-
 # Copy your PC meta file to the project directory
 copy "%APPDATA%\LocalLow\Cygames\Umamusume\meta" meta
 
-# Decrypt it
+# Decrypt it (uv will auto-install pysqlcipher3)
 uv run python decrypt_meta.py
 
 # Replace with decrypted version
