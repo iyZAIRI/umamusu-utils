@@ -42,9 +42,10 @@ def decrypt_meta_with_sqlcipher(encrypted_path, decrypted_path):
     print(f"Using decryption key (hex): {key_hex}")
 
     # Use sqlcipher command line tool
+    # Note: Using hexkey instead of key to provide raw bytes directly
     sql_commands = f"""
 PRAGMA cipher_compatibility = 4;
-PRAGMA key = "x'{key_hex}'";
+PRAGMA hexkey = '{key_hex}';
 ATTACH DATABASE '{decrypted_path}' AS plaintext KEY '';
 SELECT sqlcipher_export('plaintext');
 DETACH DATABASE plaintext;
