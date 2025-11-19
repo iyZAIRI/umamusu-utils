@@ -31,17 +31,34 @@ By default the script will search for them under `%APPDATA%\LocalLow\Cygames\Uma
 
 ### Important Note: Encrypted Meta File (PC Version)
 
-The PC version of Uma Musume **encrypts the `meta` database file**, which makes it incompatible with this tool. You have two options:
+The PC version of Uma Musume **encrypts the `meta` database file**, which makes it incompatible with this tool. You have three options:
 
-**Option 1: Download the Android version meta file (Recommended)**
+**Option 1: Decrypt your PC meta file**
+```sh
+# Install pysqlcipher3 for decryption
+pip install pysqlcipher3
+
+# Copy your PC meta file to the project directory
+copy "%APPDATA%\LocalLow\Cygames\Umamusume\meta" meta
+
+# Decrypt it
+uv run python decrypt_meta.py
+
+# Replace with decrypted version
+move meta_decrypted meta
+```
+
+This decrypts your PC installation's meta file, ensuring all asset hashes match your local game files.
+
+**Option 2: Download the Android version meta file**
 ```sh
 # Download the unencrypted Android version
 uv run python download_meta.py
 ```
 
-This will download the meta file from the [umeta repository](https://github.com/hker9527/umeta) which contains the unencrypted Android version.
+This downloads the meta file from the [umeta repository](https://github.com/hker9527/umeta). Note: Android and PC versions may be out of sync, resulting in missing assets.
 
-**Option 2: Use an existing unencrypted meta file**
+**Option 3: Use an existing unencrypted meta file**
 
 If you have access to an Android device with Uma Musume installed, you can extract the meta file from:
 ```
