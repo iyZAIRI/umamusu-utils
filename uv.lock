@@ -636,6 +636,15 @@ wheels = [
 ]
 
 [[package]]
+name = "sqlcipher3-binary"
+version = "0.5.4"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/5d/15e6bb7a95a573497a29b6f654975b2a6ebc1641f83d36708a72010d59ef/sqlcipher3_binary-0.5.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fe9e4303725dd98d60af26de0a6d5105a20b32e37a43fc3d18cbaaba6dbb22e5", size = 5848048, upload-time = "2024-10-12T12:49:14.495Z" },
+    { url = "https://files.pythonhosted.org/packages/4d/91/9cd6516476694d53db3c0c97ba24cad73cc12539d94e9704d5623589ce5b/sqlcipher3_binary-0.5.4-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:82c8f208f153b1a5e7b47165d8a462526294b7330fae77b7747b25361eeeca53", size = 5844167, upload-time = "2024-10-12T12:49:24.159Z" },
+]
+
+[[package]]
 name = "texture2ddecoder"
 version = "1.0.5"
 source = { registry = "https://pypi.org/simple" }
@@ -676,6 +685,7 @@ dependencies = [
     { name = "aiohttp" },
     { name = "lz4" },
     { name = "pefile" },
+    { name = "sqlcipher3-binary" },
     { name = "unitypy" },
 ]
 
@@ -684,6 +694,7 @@ requires-dist = [
     { name = "aiohttp", specifier = ">=3.13.2" },
     { name = "lz4", specifier = ">=4.4.5" },
     { name = "pefile", specifier = ">=2024.8.26" },
+    { name = "sqlcipher3-binary", specifier = ">=0.5.3" },
     { name = "unitypy", specifier = ">=1.23.0" },
 ]
 

@@ -89,5 +89,4 @@ state.storage_path = args.storage_folder
 state.log_path = args.log
 
 state.storage_path.mkdir(exist_ok=True)
-
 args.handler(args)
