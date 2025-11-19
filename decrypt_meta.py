@@ -5,7 +5,10 @@ Decrypt Uma Musume PC meta file
 The PC version encrypts the meta file using SQLCipher with a custom key.
 This script decrypts it and saves an unencrypted version.
 
-Requirements: sqlcipher3-binary (auto-installed by uv)
+Requirements:
+- Linux/macOS: sqlcipher command-line tool (apt-get install sqlcipher / brew install sqlcipher)
+- NOT recommended for Windows (use download_meta.py instead)
+
 Keys extracted from: https://github.com/daydreamer-json/uma-db-stuff
 """
 import subprocess
@@ -72,63 +75,26 @@ DETACH DATABASE plaintext;
         return False
 
 
-def decrypt_meta_with_python():
-    """Decrypt using Python library (alternative method)"""
-    try:
-        from sqlcipher3 import dbapi2 as sqlite
-    except ImportError:
-        print("✗ sqlcipher3-binary not installed")
-        print("\nPlease install: pip install sqlcipher3-binary")
-        return False
-
-    encrypted_path = Path("./meta")
-    decrypted_path = Path("./meta_decrypted")
-
-    if not encrypted_path.exists():
-        print(f"✗ Error: Encrypted meta file not found at {encrypted_path}")
-        return False
-
-    key = generate_decryption_key()
-    key_hex = key.hex()
-
-    print(f"Decrypting {encrypted_path} -> {decrypted_path}")
-
-    try:
-        # Open encrypted database
-        conn = sqlite.connect(str(encrypted_path))
-        cursor = conn.cursor()
-        cursor.execute(f"PRAGMA key = \"x'{key_hex}'\"")
-        cursor.execute("PRAGMA cipher_compatibility = 4")
-
-        # Verify we can read it
-        cursor.execute("SELECT COUNT(*) FROM a")
-        count = cursor.fetchone()[0]
-        print(f"✓ Successfully opened encrypted database ({count:,} entries)")
-
-        # Export to unencrypted database
-        cursor.execute(f"ATTACH DATABASE '{decrypted_path}' AS plaintext KEY ''")
-        cursor.execute("SELECT sqlcipher_export('plaintext')")
-        cursor.execute("DETACH DATABASE plaintext")
-
-        conn.close()
-
-        print(f"✓ Successfully decrypted meta file!")
-        print(f"  Saved to: {decrypted_path}")
-        return True
-
-    except Exception as e:
-        print(f"✗ Error: {e}")
-        return False
 
 
 if __name__ == "__main__":
+    import platform
+
+    # Check if Windows
+    if platform.system() == "Windows":
+        print("=== Windows Not Supported ===\n")
+        print("SQLCipher decryption on Windows requires complex setup.")
+        print("\n✓ Recommended: Use the Android meta file instead:")
+        print("  uv run python download_meta.py")
+        print("\nThis is easier and works reliably on Windows.")
+        exit(1)
+
     encrypted_path = Path("./meta")
     decrypted_path = Path("./meta_decrypted")
 
     if not encrypted_path.exists():
         print(f"✗ Error: meta file not found at {encrypted_path}")
-        print("\nExpected location: ./meta")
-        print("Or specify with PC installation: C:\\Users\\YOUR_USERNAME\\AppData\\LocalLow\\Cygames\\Umamusume\\meta")
+        print("\nPlease copy your PC meta file to the project directory")
         exit(1)
 
     if decrypted_path.exists():
@@ -138,19 +104,14 @@ if __name__ == "__main__":
             exit(0)
 
     print("=== Uma Musume Meta Decryption ===\n")
-    print("Attempting decryption with Python library...")
+    print("Using sqlcipher command line tool...")
 
-    if decrypt_meta_with_python():
+    if decrypt_meta_with_sqlcipher(encrypted_path, decrypted_path):
         print("\n✓ Done! You can now use the decrypted meta file:")
         print(f"  mv {decrypted_path} meta")
         print("  uv run main.py assets dump --kind supportcard")
     else:
-        print("\nFalling back to sqlcipher command line tool...")
-        if decrypt_meta_with_sqlcipher(encrypted_path, decrypted_path):
-            print("\n✓ Done! You can now use the decrypted meta file:")
-            print(f"  mv {decrypted_path} meta")
-            print("  uv run main.py assets dump --kind supportcard")
-        else:
-            print("\n✗ Decryption failed. Please install either:")
-            print("  1. sqlcipher3-binary: pip install sqlcipher3-binary")
-            print("  2. sqlcipher command line tool")
+        print("\n✗ Decryption failed")
+        print("\nPlease ensure sqlcipher is installed:")
+        print("  Linux: sudo apt-get install sqlcipher")
+        print("  macOS: brew install sqlcipher")

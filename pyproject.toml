@@ -8,7 +8,6 @@ dependencies = [
     "aiohttp>=3.13.2",
     "lz4>=4.4.5",
     "pefile>=2024.8.26",
-    "sqlcipher3-binary>=0.5.3",
     "unitypy>=1.23.0",
 ]
 

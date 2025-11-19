@@ -31,36 +31,27 @@ By default the script will search for them under `%APPDATA%\LocalLow\Cygames\Uma
 
 ### Important Note: Encrypted Meta File (PC Version)
 
-The PC version of Uma Musume **encrypts the `meta` database file**, which makes it incompatible with this tool. You have three options:
+The PC version of Uma Musume **encrypts the `meta` database file** using SQLCipher. You have two options:
 
-**Option 1: Decrypt your PC meta file**
-```sh
-# Copy your PC meta file to the project directory
-copy "%APPDATA%\LocalLow\Cygames\Umamusume\meta" meta
-
-# Decrypt it (uv will auto-install sqlcipher3-binary)
-uv run python decrypt_meta.py
-
-# Replace with decrypted version
-move meta_decrypted meta
-```
-
-This decrypts your PC installation's meta file, ensuring all asset hashes match your local game files.
-
-**Option 2: Download the Android version meta file**
+**Option 1: Download the Android version meta file (Recommended)**
 ```sh
 # Download the unencrypted Android version
 uv run python download_meta.py
 ```
 
-This downloads the meta file from the [umeta repository](https://github.com/hker9527/umeta). Note: Android and PC versions may be out of sync, resulting in missing assets.
+This downloads the meta file from the [umeta repository](https://github.com/hker9527/umeta). The Android and PC versions are usually in sync, but occasionally there may be version differences.
 
-**Option 3: Use an existing unencrypted meta file**
+**Option 2: Decrypt your PC meta file (Advanced - Linux/macOS only)**
+```sh
+# Install sqlcipher command-line tool first
+# Linux: sudo apt-get install sqlcipher
+# macOS: brew install sqlcipher
 
-If you have access to an Android device with Uma Musume installed, you can extract the meta file from:
+# Then run the decryption script
+uv run python decrypt_meta.py
 ```
-/data/data/jp.co.cygames.umamusume/files/meta
-```
+
+**Note for Windows users:** SQLCipher decryption on Windows requires complex setup (Visual Studio Build Tools, OpenSSL compilation, etc.). We recommend using Option 1 (Android meta file) instead.
 
 ## TODO
 
