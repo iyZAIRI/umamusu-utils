@@ -5,6 +5,7 @@ Decrypt Uma Musume PC meta file
 The PC version encrypts the meta file using SQLCipher with a custom key.
 This script decrypts it and saves an unencrypted version.
 
+Requirements: sqlcipher3-binary (auto-installed by uv)
 Keys extracted from: https://github.com/daydreamer-json/uma-db-stuff
 """
 import subprocess
@@ -74,10 +75,10 @@ DETACH DATABASE plaintext;
 def decrypt_meta_with_python():
     """Decrypt using Python library (alternative method)"""
     try:
-        import pysqlcipher3.dbapi2 as sqlite
+        from sqlcipher3 import dbapi2 as sqlite
     except ImportError:
-        print("✗ pysqlcipher3 not installed")
-        print("\nPlease install: pip install pysqlcipher3")
+        print("✗ sqlcipher3-binary not installed")
+        print("\nPlease install: pip install sqlcipher3-binary")
         return False
 
     encrypted_path = Path("./meta")
@@ -151,5 +152,5 @@ if __name__ == "__main__":
             print("  uv run main.py assets dump --kind supportcard")
         else:
             print("\n✗ Decryption failed. Please install either:")
-            print("  1. pysqlcipher3: pip install pysqlcipher3")
+            print("  1. sqlcipher3-binary: pip install sqlcipher3-binary")
             print("  2. sqlcipher command line tool")
