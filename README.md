@@ -29,6 +29,25 @@ Some game DB files are also needed depending on what you're trying to extract:
 
 By default the script will search for them under `%APPDATA%\LocalLow\Cygames\Umamusume`, but you can also specify their location with CLI options.
 
+### Important Note: Encrypted Meta File (PC Version)
+
+The PC version of Uma Musume **encrypts the `meta` database file**, which makes it incompatible with this tool. You have two options:
+
+**Option 1: Download the Android version meta file (Recommended)**
+```sh
+# Download the unencrypted Android version
+uv run python download_meta.py
+```
+
+This will download the meta file from the [umeta repository](https://github.com/hker9527/umeta) which contains the unencrypted Android version.
+
+**Option 2: Use an existing unencrypted meta file**
+
+If you have access to an Android device with Uma Musume installed, you can extract the meta file from:
+```
+/data/data/jp.co.cygames.umamusume/files/meta
+```
+
 ## TODO
 
 - **Asset Downloading**: Allow downloading assets instead of requiring a game installation. This makes it a lot easier to run these scripts in environments without a game installation.
